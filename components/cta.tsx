@@ -3,26 +3,26 @@ import Link from "next/link";
 export default function Cta() {
   return (
     <section className="relative overflow-hidden">
-      <div className="max-w6xl mx-auto px-4 sm:px-6">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="bg-linear-to-r from-transparent via-gray-800/50 py-12 md:py-20">
           <div className="mx-auto max-w-3xl text-center">
             <h2
-              className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-8 font-nacelle text-3xl font-semibold text-transparent md:text-4xl"
+              className="pb-8 font-nacelle text-3xl font-semibold text-gray-200 md:text-4xl"
               data-aos="fade-up"
             >
-              Know a tool we're missing?
+              Ready to find your next CLI tool?
             </h2>
             <p className="mx-auto mb-8 max-w-lg text-lg text-indigo-200/65" data-aos="fade-up" data-aos-delay={200}>
-              CLI Hub is open-source and community-driven. Submit a tool, improve descriptions, or contribute on GitHub.
+              Browse 77 curated CLI tools across 10 categories. AI-powered, community-vetted, always up to date.
             </p>
-            <div className="mx-auto max-w-xs sm:flex sm:max-w-none sm:justify-center">
+            <div className="mx-auto flex max-w-xs flex-col items-center gap-4 sm:max-w-none sm:flex-row sm:justify-center">
               <div data-aos="fade-up" data-aos-delay={400}>
                 <Link
-                  className="btn group mb-4 w-full bg-linear-to-t from-indigo-600 to-indigo-500 bg-[length:100%_100%] bg-[bottom] text-white shadow-[inset_0px_1px_0px_0px_--theme(--color-white/.16)] hover:bg-[length:100%_150%] sm:mb-0 sm:w-auto"
-                  href="#0"
+                  className="btn group w-full bg-linear-to-t from-indigo-600 to-indigo-500 text-white shadow-[inset_0_1px_0_0_rgba(255,255,255,0.16)] sm:w-auto"
+                  href="/browse"
                 >
                   <span className="relative inline-flex items-center">
-                    Submit a Tool
+                    Browse All Tools
                     <span className="ml-1 tracking-normal text-white/50 transition-transform group-hover:translate-x-0.5">
                       -&gt;
                     </span>
@@ -31,10 +31,10 @@ export default function Cta() {
               </div>
               <div data-aos="fade-up" data-aos-delay={600}>
                 <Link
-                  className="btn relative w-full bg-linear-to-b from-gray-800 to-gray-800/60 bg-[length:100%_100%] bg-[bottom] text-gray-300 before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-[length:100%_150%] sm:ml-4 sm:w-auto"
-                  href="https://github.com"
+                  className="btn w-full bg-gray-800 text-gray-300 hover:bg-gray-700 sm:w-auto"
+                  href="/browse"
                 >
-                  Star on GitHub
+                  Explore Categories
                 </Link>
               </div>
             </div>
