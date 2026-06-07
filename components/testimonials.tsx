@@ -83,7 +83,7 @@ export default function Testimonials() {
               <div className="mb-1 font-nacelle text-4xl font-semibold text-gray-200">{catCount ?? "—"}</div>
               <div className="text-sm font-medium text-gray-400">ML-Classified Categories</div>
               <p className="mt-2 text-sm text-indigo-200/65">
-                From AI to Kubernetes — our neural network sorts every tool into the right bucket (88.3% accuracy).
+                From AI to Kubernetes — our neural network sorts every tool into the right bucket.
               </p>
             </div>
           </div>
