@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { getToolBySlug } from "@/lib/api";
 import type { CliTool } from "@/lib/api";
@@ -14,6 +14,7 @@ const PKG_CMD: Record<string, string> = {
 
 export default function ToolDetailPage() {
   const { slug } = useParams<{ slug: string }>();
+  const router = useRouter();
   const [tool, setTool] = useState<CliTool | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -48,12 +49,12 @@ export default function ToolDetailPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
-      <Link href="/browse" className="mb-6 inline-flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-gray-200">
+      <button onClick={() => router.back()} className="mb-6 inline-flex items-center gap-1 text-sm text-gray-400 transition-colors hover:text-gray-200">
         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
         </svg>
-        Back to browse
-      </Link>
+        Back
+      </button>
 
       <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6 sm:p-8">
         <div className="flex items-start gap-4">

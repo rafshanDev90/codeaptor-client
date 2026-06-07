@@ -5,29 +5,36 @@ import Link from "next/link";
 import { getTools, getCategories, CliTool } from "@/lib/api";
 
 export default function Testimonials() {
+  console.log('Testimonials MOUNT');
+
   const [toolCount, setToolCount] = useState<number | null>(null);
   const [catCount, setCatCount] = useState<number | null>(null);
   const [featured, setFeatured] = useState<CliTool | null>(null);
 
   useEffect(() => {
+    console.log('Testimonials useEffect RUN');
     let cancelled = false;
+
     async function load() {
+      console.log('Testimonials load START');
       try {
         const [toolsRes, catRes] = await Promise.all([
           getTools(),
           getCategories(),
         ]);
-        if (cancelled) return;
+        console.log('Testimonials API OK', { toolsResults: toolsRes.results, cats: catRes.data.categories.length });
+        if (cancelled) { console.log('Testimonials CANCELLED'); return; }
         setToolCount(toolsRes.results);
         setCatCount(catRes.data.categories.length);
         const ft = toolsRes.data.tools.find((t) => t.isFeatured);
+        console.log('Testimonials featured found:', ft?.displayName);
         if (ft) setFeatured(ft);
       } catch (e) {
-        console.error(e);
+        console.error('Testimonials API ERROR:', e);
       }
     }
     load();
-    return () => { cancelled = true; };
+    return () => { console.log('Testimonials CLEANUP'); cancelled = true; };
   }, []);
 
   return (

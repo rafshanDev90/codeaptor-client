@@ -38,7 +38,6 @@ function BrowseContent() {
         if (search) params.search = search;
         if (category) params.category = category;
         const [toolsRes, catRes] = await Promise.all([getTools(params), getCategories()]);
-        console.log('BROWSE tools sample:', toolsRes.data.tools.slice(0, 2));
         setTools(toolsRes.data.tools);
         setCategories(catRes.data.categories);
       } catch (e) {

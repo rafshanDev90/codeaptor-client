@@ -23,8 +23,6 @@ export default function ToolIcon({ iconUrl, displayName, size = 40, className = 
   const initial = displayName?.charAt(0)?.toUpperCase() || "?";
   const colorIndex = initial.charCodeAt(0) % BG_COLORS.length;
 
-  console.log('ToolIcon render', { displayName, iconUrl, errored, initial });
-
   if (iconUrl && !errored) {
     return (
       <img
@@ -32,7 +30,7 @@ export default function ToolIcon({ iconUrl, displayName, size = 40, className = 
         alt={displayName}
         width={size}
         height={size}
-        onError={() => { console.log('ToolIcon onError for', displayName); setErrored(true); }}
+        onError={() => setErrored(true)}
         className={`shrink-0 rounded-lg object-contain ${className}`}
         style={{ width: size, height: size }}
       />
