@@ -1,22 +1,37 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Spotlight from "@/components/spotlight";
+import { getCategoryCounts, CategoryCount } from "@/lib/api";
 
 const CATEGORIES = [
-  { name: "AI", slug: "ai", desc: "Machine learning, LLMs, AI agents", count: 30 },
-  { name: "Cloud", slug: "cloud", desc: "AWS, GCP, Azure, serverless", count: 30 },
-  { name: "Database", slug: "database", desc: "SQL, NoSQL, caching, search", count: 30 },
-  { name: "DevOps", slug: "devops", desc: "CI/CD, Docker, infrastructure", count: 30 },
-  { name: "Frontend", slug: "frontend", desc: "Build tools, React, bundlers", count: 30 },
-  { name: "Kubernetes", slug: "kubernetes", desc: "K8s, Helm, monitoring", count: 30 },
-  { name: "Productivity", slug: "productivity", desc: "Terminal, Git, automation", count: 30 },
-  { name: "Security", slug: "security", desc: "Vulnerability scanning, audit", count: 30 },
-  { name: "Testing", slug: "testing", desc: "Test runners, E2E, coverage", count: 30 },
-  { name: "Backend", slug: "backend", desc: "Servers, APIs, runtimes", count: 30 },
+  { name: "AI", slug: "ai", desc: "Machine learning, LLMs, AI agents" },
+  { name: "Cloud", slug: "cloud", desc: "AWS, GCP, Azure, serverless" },
+  { name: "Database", slug: "database", desc: "SQL, NoSQL, caching, search" },
+  { name: "DevOps", slug: "devops", desc: "CI/CD, Docker, infrastructure" },
+  { name: "Frontend", slug: "frontend", desc: "Build tools, React, bundlers" },
+  { name: "Kubernetes", slug: "kubernetes", desc: "K8s, Helm, monitoring" },
+  { name: "Productivity", slug: "productivity", desc: "Terminal, Git, automation" },
+  { name: "Security", slug: "security", desc: "Vulnerability scanning, audit" },
+  { name: "Testing", slug: "testing", desc: "Test runners, E2E, coverage" },
+  { name: "Backend", slug: "backend", desc: "Servers, APIs, runtimes" },
 ];
 
 export default function Workflows() {
+  const [counts, setCounts] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    let cancelled = false;
+    getCategoryCounts().then((res) => {
+      if (cancelled) return;
+      const map: Record<string, number> = {};
+      for (const c of res.data.counts) map[c.slug] = c.count;
+      setCounts(map);
+    }).catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <section>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -47,7 +62,7 @@ export default function Workflows() {
                     <div className="mb-2">
                       <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
                         <span className="bg-linear-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
-                          {cat.count} tools
+                          {counts[cat.slug] ?? "•"} tools
                         </span>
                       </span>
                     </div>

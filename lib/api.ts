@@ -60,3 +60,13 @@ export async function getToolBySlug(slug: string) {
 export async function getCategories() {
   return fetchJSON<{ status: string; data: { categories: Category[] } }>("/cli-tools/categories");
 }
+
+export interface CategoryCount {
+  name: string;
+  slug: string;
+  count: number;
+}
+
+export async function getCategoryCounts() {
+  return fetchJSON<{ status: string; data: { counts: CategoryCount[] } }>("/cli-tools/categories/counts");
+}
