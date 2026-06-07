@@ -4,6 +4,7 @@ import { Suspense, useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { getTools, getCategories, CliTool } from "@/lib/api";
+import ToolIcon from "@/components/tool-icon";
 
 const PKG_COLORS: Record<string, string> = {
   npm: "#cb3837", pip: "#3775a9", brew: "#fbb040",
@@ -37,6 +38,7 @@ function BrowseContent() {
         if (search) params.search = search;
         if (category) params.category = category;
         const [toolsRes, catRes] = await Promise.all([getTools(params), getCategories()]);
+        console.log('BROWSE tools sample:', toolsRes.data.tools.slice(0, 2));
         setTools(toolsRes.data.tools);
         setCategories(catRes.data.categories);
       } catch (e) {
@@ -137,7 +139,8 @@ function BrowseContent() {
                   href={`/tool/${tool.name}`}
                   className="group block rounded-2xl border border-gray-800 bg-gray-900 p-5 transition-all hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5"
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    <ToolIcon iconUrl={tool.iconUrl} displayName={tool.displayName} size={40} />
                     <div className="min-w-0 flex-1">
                       <h3 className="truncate font-nacelle text-base font-semibold text-gray-200">
                         {tool.displayName}

@@ -12,6 +12,7 @@ export interface CliTool {
   downloadUrl?: string;
   icon?: string;
   iconName?: string;
+  iconUrl?: string;
   version?: string;
   language?: string;
   installCommand?: string;

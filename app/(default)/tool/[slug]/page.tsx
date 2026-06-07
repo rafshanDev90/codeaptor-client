@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { getToolBySlug } from "@/lib/api";
 import type { CliTool } from "@/lib/api";
+import ToolIcon from "@/components/tool-icon";
 
 const PKG_CMD: Record<string, string> = {
   npm: "npm install", pip: "pip install", brew: "brew install",
@@ -55,8 +56,9 @@ export default function ToolDetailPage() {
       </Link>
 
       <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6 sm:p-8">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
+        <div className="flex items-start gap-4">
+          <ToolIcon iconUrl={tool.iconUrl} displayName={tool.displayName} size={56} />
+          <div className="min-w-0 flex-1">
             <h1 className="font-nacelle text-2xl font-bold text-gray-200">{tool.displayName}</h1>
             {catName && (
               <span className="mt-1 inline-block rounded-full bg-indigo-500/10 px-3 py-0.5 text-xs font-medium text-indigo-300">
@@ -64,7 +66,7 @@ export default function ToolDetailPage() {
               </span>
             )}
           </div>
-          <div className="flex gap-2">
+          <div className="flex shrink-0 flex-wrap gap-2">
             {tool.isFeatured && (
               <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-medium text-amber-400">Featured</span>
             )}
