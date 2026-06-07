@@ -1,5 +1,6 @@
 import Logo from "./logo";
 import Image from "next/image";
+import Link from "next/link";
 import FooterIllustration from "@/public/images/footer-illustration.svg";
 
 export default function Footer() {
@@ -23,44 +24,19 @@ export default function Footer() {
             <h3 className="text-sm font-medium text-gray-200">CLI Hub</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="/">
+                <Link className="text-indigo-200/65 transition hover:text-indigo-500" href="/">
                   Home
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="/browse">
+                <Link className="text-indigo-200/65 transition hover:text-indigo-500" href="/browse">
                   Browse Tools
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
+                <Link className="text-indigo-200/65 transition hover:text-indigo-500" href="/browse">
                   Categories
-                </a>
-              </li>
-              <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
-                  Submit Tool
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-gray-200">Resources</h3>
-            <ul className="space-y-2 text-sm">
-              <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
-                  Documentation
-                </a>
-              </li>
-              <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
-                  API
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -68,18 +44,13 @@ export default function Footer() {
             <h3 className="text-sm font-medium text-gray-200">Community</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
+                <a
+                  className="text-indigo-200/65 transition hover:text-indigo-500"
+                  href="https://github.com/rafshanDev90/codeaptor-client"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   GitHub
-                </a>
-              </li>
-              <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
-                  Discord
                 </a>
               </li>
             </ul>
@@ -88,14 +59,14 @@ export default function Footer() {
             <h3 className="text-sm font-medium text-gray-200">Legal</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
+                <Link className="text-indigo-200/65 transition hover:text-indigo-500" href="/privacy">
                   Privacy
-                </a>
+                </Link>
               </li>
               <li>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
+                <Link className="text-indigo-200/65 transition hover:text-indigo-500" href="/terms">
                   Terms
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -107,18 +78,19 @@ export default function Footer() {
               <p className="mb-3 text-indigo-200/65">
                 &copy; CLI Hub
                 <span className="text-gray-700"> &middot; </span>
-                <a className="text-indigo-200/65 transition hover:text-indigo-500" href="#0">
+                <Link className="text-indigo-200/65 transition hover:text-indigo-500" href="/terms">
                   Terms
-                </a>
+                </Link>
               </p>
               <ul className="inline-flex gap-1">
                 <li>
-                  <a className="flex items-center justify-center text-indigo-500 transition hover:text-indigo-400" href="#0" aria-label="Twitter">
-                    <svg className="h-8 w-8 fill-current" viewBox="0 0 32 32"><path d="m13.063 9 3.495 4.475L20.601 9h2.454l-5.359 5.931L24 23h-4.938l-3.866-4.893L10.771 23H8.316l5.735-6.342L8 9h5.063Zm-.74 1.347h-1.457l8.875 11.232h1.36l-8.778-11.232Z" /></svg>
-                  </a>
-                </li>
-                <li>
-                  <a className="flex items-center justify-center text-indigo-500 transition hover:text-indigo-400" href="#0" aria-label="Github">
+                  <a
+                    className="flex items-center justify-center text-indigo-500 transition hover:text-indigo-400"
+                    href="https://github.com/rafshanDev90/codeaptor-client"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="GitHub"
+                  >
                     <svg className="h-8 w-8 fill-current" viewBox="0 0 32 32"><path d="M16 8.2c-4.4 0-8 3.6-8 8 0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4V22c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.3 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.6-.2 1.3-.3 2-.3s1.4.1 2 .3c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.7 3.9.3.4.6.9.6 1.6v2.2c0 .2.1.5.6.4 3.2-1.1 5.5-4.1 5.5-7.6-.1-4.4-3.7-8-8.1-8z" /></svg>
                   </a>
                 </li>
