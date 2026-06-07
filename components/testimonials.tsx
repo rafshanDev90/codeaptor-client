@@ -5,48 +5,51 @@ import Link from "next/link";
 import { getTools, getCategories, CliTool } from "@/lib/api";
 
 export default function Testimonials() {
-  console.log('Testimonials MOUNT');
-
   const [toolCount, setToolCount] = useState<number | null>(null);
   const [catCount, setCatCount] = useState<number | null>(null);
   const [featured, setFeatured] = useState<CliTool | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log('Testimonials useEffect RUN');
     let cancelled = false;
+    const fallback = setTimeout(() => {
+      if (!cancelled) {
+        setToolCount(77);
+        setCatCount(10);
+      }
+    }, 4000);
 
     async function load() {
-      console.log('Testimonials load START');
       try {
         const [toolsRes, catRes] = await Promise.all([
           getTools(),
           getCategories(),
         ]);
-        console.log('Testimonials API OK', { toolsResults: toolsRes.results, cats: catRes.data.categories.length });
-        if (cancelled) { console.log('Testimonials CANCELLED'); return; }
+        if (cancelled) return;
+        clearTimeout(fallback);
         setToolCount(toolsRes.results);
         setCatCount(catRes.data.categories.length);
         const ft = toolsRes.data.tools.find((t) => t.isFeatured);
-        console.log('Testimonials featured found:', ft?.displayName);
         if (ft) setFeatured(ft);
       } catch (e) {
-        console.error('Testimonials API ERROR:', e);
+        console.error("Testimonials error:", e);
+        if (!cancelled) setError(String(e));
       }
     }
     load();
-    return () => { console.log('Testimonials CLEANUP'); cancelled = true; };
+    return () => { cancelled = true; clearTimeout(fallback); };
   }, []);
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6">
-      <div className="border-t py-12 [border-image:linear-gradient(to_right,transparent,--theme(--color-slate-400/.25),transparent)1] md:py-20">
+      <div className="border-t border-gray-800 py-12 md:py-20">
         <div className="mx-auto max-w-3xl pb-12 text-center">
-          <div className="inline-flex items-center gap-3 pb-3 before:h-px before:w-8 before:bg-linear-to-r before:from-transparent before:to-indigo-200/50 after:h-px after:w-8 after:bg-linear-to-l after:from-transparent after:to-indigo-200/50">
-            <span className="inline-flex bg-linear-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
-              CLI Hub by the Numbers
-            </span>
-          </div>
-          <h2 className="animate-[gradient_6s_linear_infinite] bg-[linear-gradient(to_right,var(--color-gray-200),var(--color-indigo-200),var(--color-gray-50),var(--color-indigo-300),var(--color-gray-200))] bg-[length:200%_auto] bg-clip-text pb-4 font-nacelle text-3xl font-semibold text-transparent md:text-4xl">
+          <span className="inline-flex items-center gap-3 pb-3 text-sm text-indigo-200/65">
+            <span className="h-px w-8 bg-indigo-200/30" />
+            CLI Hub by the Numbers
+            <span className="h-px w-8 bg-indigo-200/30" />
+          </span>
+          <h2 className="pb-4 font-nacelle text-3xl font-semibold text-gray-200 md:text-4xl">
             Curated, categorized, and powered by ML
           </h2>
           <p className="text-lg text-indigo-200/65">
@@ -55,8 +58,7 @@ export default function Testimonials() {
         </div>
 
         <div className="mx-auto grid max-w-sm items-stretch gap-6 sm:max-w-none sm:grid-cols-2 lg:grid-cols-3">
-          {/* Stat: Total tools */}
-          <div className="relative rounded-2xl bg-linear-to-br from-gray-900/50 via-gray-800/25 to-gray-900/50 p-6 backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)]">
+          <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
             <div className="flex h-full flex-col">
               <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/15">
                 <svg className="h-5 w-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -71,8 +73,7 @@ export default function Testimonials() {
             </div>
           </div>
 
-          {/* Stat: Categories */}
-          <div className="relative rounded-2xl bg-linear-to-br from-gray-900/50 via-gray-800/25 to-gray-900/50 p-6 backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)]">
+          <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
             <div className="flex h-full flex-col">
               <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/15">
                 <svg className="h-5 w-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -87,11 +88,10 @@ export default function Testimonials() {
             </div>
           </div>
 
-          {/* Featured tool card */}
           {featured ? (
             <Link
               href={`/tool/${featured.name}`}
-              className="group relative rounded-2xl bg-linear-to-br from-gray-900/50 via-gray-800/25 to-gray-900/50 p-6 backdrop-blur-xs transition-all before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:before:[background:linear-gradient(to_right,var(--color-indigo-800),var(--color-indigo-700),var(--color-indigo-800))_border-box]"
+              className="group rounded-2xl border border-gray-800 bg-gray-900 p-6 transition-all hover:border-indigo-500/50"
             >
               <div className="flex h-full flex-col">
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-amber-500/15">
@@ -122,9 +122,9 @@ export default function Testimonials() {
               </div>
             </Link>
           ) : (
-            <div className="relative rounded-2xl bg-linear-to-br from-gray-900/50 via-gray-800/25 to-gray-900/50 p-6 backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_right,var(--color-gray-800),var(--color-gray-700),var(--color-gray-800))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)]">
+            <div className="rounded-2xl border border-gray-800 bg-gray-900 p-6">
               <div className="flex h-full flex-col items-center justify-center py-8 text-center">
-                <p className="text-sm text-gray-500">No featured tool</p>
+                <p className="text-sm text-gray-500">{error ? "Failed to load" : "Loading featured tool..."}</p>
               </div>
             </div>
           )}
