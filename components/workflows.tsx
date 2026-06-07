@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Spotlight from "@/components/spotlight";
 import { getCategoryCounts, CategoryCount } from "@/lib/api";
 
 const CATEGORIES = [
@@ -17,6 +16,19 @@ const CATEGORIES = [
   { name: "Testing", slug: "testing", desc: "Test runners, E2E, coverage" },
   { name: "Backend", slug: "backend", desc: "Servers, APIs, runtimes" },
 ];
+
+const CAT_ICONS: Record<string, string> = {
+  ai: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+  cloud: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z",
+  database: "M4 7v10c0 2.21 3.58 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.58 4 8 4s8-1.79 8-4M4 7c0-2.21 3.58-4 8-4s8 1.79 8 4m0 5c0 2.21-3.58 4-8 4s-8-1.79-8-4",
+  devops: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z M15 12a3 3 0 11-6 0 3 3 0 016 0z",
+  frontend: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+  kubernetes: "M12 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4z M12 22l-2-4h-4l3-3-1-4 4 2 4-2-1 4 3 3h-4z",
+  productivity: "M13 10V3L4 14h7v7l9-11h-7z",
+  security: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+  testing: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",
+  backend: "M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01",
+};
 
 export default function Workflows() {
   const [counts, setCounts] = useState<Record<string, number>>({});
@@ -34,6 +46,19 @@ export default function Workflows() {
 
   return (
     <section>
+      <style>{`
+        @keyframes cat-marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .cat-track {
+          animation: cat-marquee 60s linear infinite;
+          width: fit-content;
+        }
+        .cat-track:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <div className="pb-12 md:pb-20">
           <div className="mx-auto max-w-3xl pb-12 text-center md:pb-20">
@@ -50,29 +75,30 @@ export default function Workflows() {
             </p>
           </div>
 
-          <Spotlight className="group mx-auto grid max-w-sm items-start gap-6 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4">
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/browse?category=${cat.slug}`}
-                className="group/card relative h-full overflow-hidden rounded-2xl bg-gray-800 p-px before:pointer-events-none before:absolute before:-left-40 before:-top-40 before:z-10 before:h-80 before:w-80 before:translate-x-[var(--mouse-x)] before:translate-y-[var(--mouse-y)] before:rounded-full before:bg-indigo-500/80 before:opacity-0 before:blur-3xl before:transition-opacity before:duration-500 after:pointer-events-none after:absolute after:-left-48 after:-top-48 after:z-30 after:h-64 after:w-64 after:translate-x-[var(--mouse-x)] after:translate-y-[var(--mouse-y)] after:rounded-full after:bg-indigo-500 after:opacity-0 after:blur-3xl after:transition-opacity after:duration-500 hover:after:opacity-20 group-hover:before:opacity-100"
-              >
-                <div className="relative z-20 h-full overflow-hidden rounded-[inherit] bg-gray-950 after:absolute after:inset-0 after:bg-linear-to-br after:from-gray-900/50 after:via-gray-800/25 after:to-gray-900/50">
-                  <div className="p-6">
-                    <div className="mb-2">
-                      <span className="btn-sm relative rounded-full bg-gray-800/40 px-2.5 py-0.5 text-xs font-normal before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(to_bottom,--theme(--color-gray-700/.15),--theme(--color-gray-700/.5))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] hover:bg-gray-800/60">
-                        <span className="bg-linear-to-r from-indigo-500 to-indigo-200 bg-clip-text text-transparent">
-                          {counts[cat.slug] ?? "•"} tools
-                        </span>
-                      </span>
+          <div className="overflow-hidden">
+            <div className="cat-track flex gap-5">
+              {[...CATEGORIES, ...CATEGORIES].map((cat, idx) => (
+                <Link
+                  key={`${cat.slug}-${idx}`}
+                  href={`/browse?category=${cat.slug}`}
+                  className="group flex w-64 shrink-0 flex-col gap-3 rounded-2xl border border-gray-800 bg-gray-900/60 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-indigo-500/40 hover:shadow-lg"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-500/10">
+                      <svg className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d={CAT_ICONS[cat.slug]} />
+                      </svg>
                     </div>
-                    <h3 className="mb-1 font-nacelle text-lg font-semibold text-gray-200">{cat.name}</h3>
-                    <p className="text-sm text-indigo-200/65">{cat.desc}</p>
+                    <div>
+                      <h3 className="font-nacelle text-base font-semibold text-gray-200">{cat.name}</h3>
+                      <span className="text-xs text-indigo-400">{counts[cat.slug] ?? "•"} tools</span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </Spotlight>
+                  <p className="text-sm text-indigo-200/65 leading-snug">{cat.desc}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
