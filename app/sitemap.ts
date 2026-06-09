@@ -25,18 +25,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
 
     if (res.ok) {
-      const { data } = await res.json();
-      for (const tool of data.tools) {
+      const body = await res.json();
+      const tools = body.data?.tools || [];
+      for (const tool of tools) {
+        const date = tool.updatedAt || tool.createdAt;
         entries.push({
           url: `${BASE_URL}/tool/${tool.name}`,
-          lastModified: new Date(tool.updatedAt || tool.createdAt),
+          lastModified: date ? new Date(date) : new Date(),
           changeFrequency: "weekly",
           priority: 0.7,
         });
       }
     }
   } catch {
-    // API unavailable during build — return static entries only
+    // API unavailable during build — skip tool entries
   }
 
   try {
@@ -46,8 +48,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
 
     if (res.ok) {
-      const { data } = await res.json();
-      for (const cat of data.categories) {
+      const body = await res.json();
+      const categories = body.data?.categories || [];
+      for (const cat of categories) {
         entries.push({
           url: `${BASE_URL}/browse?category=${cat.slug}`,
           lastModified: new Date(),
