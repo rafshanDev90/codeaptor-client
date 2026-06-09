@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 
+export const revalidate = 86400;
+
 const BASE_URL = "https://getcli.vercel.app";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
