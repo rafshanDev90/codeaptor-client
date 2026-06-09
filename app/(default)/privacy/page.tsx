@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Privacy Policy - CLI Hub",
+  title: "Privacy Policy",
   description: "CLI Hub privacy policy",
 };
 

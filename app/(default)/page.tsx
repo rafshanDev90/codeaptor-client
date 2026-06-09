@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Home - CLI Hub",
+  title: "Home",
   description: "Discover the best command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
 };
 

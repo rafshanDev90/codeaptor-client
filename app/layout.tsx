@@ -39,8 +39,32 @@ const nacelle = localFont({
 });
 
 export const metadata = {
-  title: "CLI Hub — Curated CLI Tools Directory",
+  title: {
+    default: "CLI Hub — Curated CLI Tools Directory",
+    template: "%s — CLI Hub",
+  },
   description: "Discover the best command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
+  openGraph: {
+    title: "CLI Hub — Curated CLI Tools Directory",
+    description: "Discover the best command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
+    type: "website",
+    siteName: "CLI Hub",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CLI Hub — Curated CLI Tools Directory",
+    description: "Discover the best command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "CLI Hub",
+  description: "Curated directory of command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
+  url: "https://getcli.vercel.app",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
 };
 
 export default function RootLayout({
@@ -50,6 +74,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${nacelle.variable} bg-gray-950 font-inter text-base text-gray-200 antialiased`}
       >
