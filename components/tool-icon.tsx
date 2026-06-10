@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 const BG_COLORS = [
   "from-indigo-500 to-purple-600",
@@ -25,7 +26,7 @@ export default function ToolIcon({ iconUrl, displayName, size = 40, className = 
 
   if (iconUrl && !errored) {
     return (
-      <img
+      <Image
         src={iconUrl}
         alt={displayName}
         width={size}

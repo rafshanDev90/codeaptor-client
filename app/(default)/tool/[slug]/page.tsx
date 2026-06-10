@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ToolDetailClient from "@/components/tool-detail-client";
 
 const API_URL = process.env.API_URL || "http://localhost:3000";
+const BASE_URL = "https://getcli.vercel.app";
 
 async function fetchTool(slug: string) {
   try {
@@ -35,10 +36,14 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: {
+      canonical: `/tool/${tool.name}`,
+    },
     openGraph: {
       title,
       description,
       type: "article",
+      url: `${BASE_URL}/tool/${tool.name}`,
     },
     twitter: {
       card: "summary_large_image",
@@ -65,12 +70,16 @@ export default async function ToolPage({
     );
   }
 
-  const jsonLd = {
+  const cat = tool.category;
+  const catName = typeof cat === "object" ? cat.name : "";
+  const catSlug = typeof cat === "object" ? cat.slug : "";
+
+  const softwareJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: tool.displayName,
     description: tool.tagline || tool.description?.slice(0, 160),
-    url: `https://getcli.vercel.app/tool/${tool.name}`,
+    url: `${BASE_URL}/tool/${tool.name}`,
     applicationCategory: "DeveloperApplication",
     operatingSystem: "All",
     ...(tool.officialUrl && { url: tool.officialUrl }),
@@ -88,11 +97,49 @@ export default async function ToolPage({
     }),
   };
 
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "CLI Hub",
+        item: BASE_URL,
+      },
+      ...(catName
+        ? [
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: catName,
+              item: `${BASE_URL}/browse?category=${catSlug}`,
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: tool.displayName,
+            },
+          ]
+        : [
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: tool.displayName,
+            },
+          ]),
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
       <ToolDetailClient tool={tool} />
     </>

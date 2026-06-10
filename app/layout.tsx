@@ -38,7 +38,13 @@ const nacelle = localFont({
   display: "swap",
 });
 
+const BASE_URL = "https://getcli.vercel.app";
+
 export const metadata = {
+  metadataBase: new URL(BASE_URL),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: "CLI Hub — Curated CLI Tools Directory",
     template: "%s — CLI Hub",
@@ -49,22 +55,41 @@ export const metadata = {
     description: "Discover the best command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
     type: "website",
     siteName: "CLI Hub",
+    url: BASE_URL,
   },
   twitter: {
     card: "summary_large_image",
     title: "CLI Hub — Curated CLI Tools Directory",
     description: "Discover the best command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
-const jsonLd = {
+const siteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "CLI Hub",
   description: "Curated directory of command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
-  url: "https://getcli.vercel.app",
+  url: BASE_URL,
   applicationCategory: "DeveloperApplication",
   operatingSystem: "All",
+};
+
+const searchJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  url: BASE_URL,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${BASE_URL}/browse?search={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export default function RootLayout({
@@ -77,7 +102,11 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(searchJsonLd) }}
         />
       </head>
       <body
