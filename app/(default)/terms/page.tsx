@@ -1,6 +1,7 @@
 export const metadata = {
   title: "Terms of Service",
-  description: "CLI Hub terms of service",
+  description: "CLI Hub terms of service — learn about the terms governing your use of our CLI tool directory.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function Terms() {

@@ -1,6 +1,7 @@
 export const metadata = {
   title: "Sign Up — CLI Hub",
-  description: "Page description",
+  description: "Create your CLI Hub account to save your favorite CLI tools and contribute to the community.",
+  alternates: { canonical: "/signup" },
 };
 
 import Link from "next/link";

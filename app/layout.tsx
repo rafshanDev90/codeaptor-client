@@ -45,6 +45,9 @@ export const metadata = {
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: "/favicon.ico",
+  },
   title: {
     default: "CLI Hub — Curated CLI Tools Directory",
     template: "%s — CLI Hub",
@@ -56,11 +59,20 @@ export const metadata = {
     type: "website",
     siteName: "CLI Hub",
     url: BASE_URL,
+    images: [
+      {
+        url: "/images/hero-image-01.jpg",
+        width: 1920,
+        height: 918,
+        alt: "CLI Hub — Curated CLI Tools Directory",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "CLI Hub — Curated CLI Tools Directory",
     description: "Discover the best command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
+    images: ["/images/hero-image-01.jpg"],
   },
   robots: {
     index: true,
@@ -92,6 +104,15 @@ const searchJsonLd = {
   },
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "CLI Hub",
+  url: BASE_URL,
+  logo: `${BASE_URL}/images/logo.svg`,
+  description: "Curated directory of command-line tools for developers.",
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -107,6 +128,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(searchJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
       </head>
       <body

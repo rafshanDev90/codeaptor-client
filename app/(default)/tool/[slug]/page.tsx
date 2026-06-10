@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ToolDetailClient from "@/components/tool-detail-client";
+import Breadcrumb from "@/components/breadcrumb";
 
 const API_URL = process.env.API_URL || "http://localhost:3000";
 const BASE_URL = "https://getcli.vercel.app";
@@ -30,8 +31,18 @@ export async function generateMetadata({
     return { title: "Tool Not Found" };
   }
 
-  const title = `${tool.displayName} — CLI Hub`;
-  const description = tool.tagline || tool.description?.slice(0, 160) || `Learn about ${tool.displayName} CLI tool`;
+  const seo = tool.seo || {};
+  const title = seo.metaTitle || `${tool.displayName} — CLI Hub`;
+  const description = seo.metaDescription || tool.tagline || tool.description?.slice(0, 160) || `Learn about ${tool.displayName} CLI tool`;
+
+  const ogTitle = seo.ogTitle || title;
+  const ogDesc = seo.ogDescription || description;
+
+  const ogImage = seo.ogImage
+    ? { url: seo.ogImage, width: 1200, height: 630, alt: ogTitle }
+    : tool.iconUrl
+      ? { url: tool.iconUrl, width: 256, height: 256, alt: tool.displayName }
+      : { url: "/images/hero-image-01.jpg", width: 1920, height: 918, alt: title };
 
   return {
     title,
@@ -40,15 +51,17 @@ export async function generateMetadata({
       canonical: `/tool/${tool.name}`,
     },
     openGraph: {
-      title,
-      description,
+      title: ogTitle,
+      description: ogDesc,
       type: "article",
       url: `${BASE_URL}/tool/${tool.name}`,
+      images: [ogImage],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
+      title: ogTitle,
+      description: ogDesc,
+      images: [ogImage.url],
     },
   };
 }
@@ -141,6 +154,15 @@ export default async function ToolPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
+      <div className="mx-auto max-w-4xl px-4 pt-8 sm:px-6">
+        <Breadcrumb
+          items={[
+            { label: "CLI Hub", href: "/" },
+            ...(catName ? [{ label: catName, href: `/browse?category=${catSlug}` }] : []),
+            { label: tool.displayName },
+          ]}
+        />
+      </div>
       <ToolDetailClient tool={tool} />
     </>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function ErrorPage({
   error,
@@ -12,9 +13,11 @@ export default function ErrorPage({
   return (
     <div className="flex flex-1 items-center justify-center px-4 py-20">
       <div className="mx-auto max-w-md text-center">
-        <img
+        <Image
           src="/images/error.jpeg"
           alt="Something went wrong"
+          width={400}
+          height={200}
           className="mx-auto mb-8 h-48 w-auto rounded-2xl object-cover"
         />
         <h1 className="mb-2 font-nacelle text-2xl font-semibold text-gray-200">

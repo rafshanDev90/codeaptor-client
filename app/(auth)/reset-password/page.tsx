@@ -1,6 +1,7 @@
 export const metadata = {
   title: "Reset Password — CLI Hub",
-  description: "Page description",
+  description: "Reset your CLI Hub account password.",
+  alternates: { canonical: "/reset-password" },
 };
 
 import Link from "next/link";

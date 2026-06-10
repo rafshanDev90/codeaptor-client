@@ -1,6 +1,7 @@
 export const metadata = {
   title: "Privacy Policy",
-  description: "CLI Hub privacy policy",
+  description: "CLI Hub privacy policy — learn how we handle your data when you use our CLI tool directory.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function Privacy() {

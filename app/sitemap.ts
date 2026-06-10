@@ -18,11 +18,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 0.9,
     },
+    {
+      url: `${BASE_URL}/terms`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
+    {
+      url: `${BASE_URL}/privacy`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
   ];
 
   try {
     const apiUrl = process.env.API_URL || "http://localhost:3000";
-    const res = await fetch(`${apiUrl}/api/v1/cli-tools?limit=200`, {
+    const res = await fetch(`${apiUrl}/api/v1/cli-tools?limit=1000`, {
       signal: AbortSignal.timeout(5000),
     });
 

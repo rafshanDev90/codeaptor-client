@@ -24,7 +24,14 @@ export interface CliTool {
   features?: { icon: string; title: string; desc: string }[];
   docs?: { quickStart?: string; usage?: string; advanced?: string };
   alternatives?: string[];
-  seo?: { keywords?: string[] };
+  seo?: {
+    keywords?: string[];
+    metaTitle?: string;
+    metaDescription?: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImage?: string;
+  };
   createdAt: string;
   updatedAt: string;
 }

@@ -1,6 +1,7 @@
 export const metadata = {
-  title: "Home",
+  title: "Discover CLI Tools",
   description: "Discover the best command-line tools for developers. Search, browse, and find the perfect CLI tool for your workflow.",
+  alternates: { canonical: "/" },
 };
 
 import PageIllustration from "@/components/page-illustration";
