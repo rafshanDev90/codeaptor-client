@@ -32,14 +32,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  try {
-    const apiUrl = process.env.API_URL || "http://localhost:3000";
-    const res = await fetch(`${apiUrl}/api/v1/cli-tools?limit=1000`, {
-      signal: AbortSignal.timeout(5000),
-    });
+  const apiUrl = process.env.API_URL || "http://localhost:3000";
 
-    if (res.ok) {
-      const body = await res.json();
+  const [toolsRes, catsRes] = await Promise.allSettled([
+    fetch(`${apiUrl}/api/v1/cli-tools?limit=1000`, { signal: AbortSignal.timeout(3000) }),
+    fetch(`${apiUrl}/api/v1/cli-tools/categories`, { signal: AbortSignal.timeout(3000) }),
+  ]);
+
+  if (toolsRes.status === "fulfilled" && toolsRes.value.ok) {
+    try {
+      const body = await toolsRes.value.json();
       const tools = body.data?.tools || [];
       for (const tool of tools) {
         const date = tool.updatedAt || tool.createdAt;
@@ -50,19 +52,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           priority: 0.7,
         });
       }
-    }
-  } catch {
-    // API unavailable during build — skip tool entries
+    } catch {}
   }
 
-  try {
-    const apiUrl = process.env.API_URL || "http://localhost:3000";
-    const res = await fetch(`${apiUrl}/api/v1/cli-tools/categories`, {
-      signal: AbortSignal.timeout(5000),
-    });
-
-    if (res.ok) {
-      const body = await res.json();
+  if (catsRes.status === "fulfilled" && catsRes.value.ok) {
+    try {
+      const body = await catsRes.value.json();
       const categories = body.data?.categories || [];
       for (const cat of categories) {
         entries.push({
@@ -72,9 +67,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           priority: 0.5,
         });
       }
-    }
-  } catch {
-    // fallback
+    } catch {}
   }
 
   return entries;
