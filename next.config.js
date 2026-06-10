@@ -15,6 +15,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
+        source: "/sitemap.xml",
+        destination: `${process.env.API_URL || "http://localhost:3000"}/api/sitemap.xml`,
+      },
+      {
         source: "/api/:path*",
         destination: `${process.env.API_URL || "http://localhost:3000"}/api/:path*`,
       },
