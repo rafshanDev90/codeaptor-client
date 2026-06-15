@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { CliTool } from "@/lib/api";
@@ -9,6 +10,31 @@ const PKG_CMD: Record<string, string> = {
   npm: "npm install", pip: "pip install", brew: "brew install",
   go: "go install", cargo: "cargo install", apt: "apt install",
 };
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  const copy = () => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+  return (
+    <div className="flex items-center rounded-lg bg-gray-950">
+      <code className="flex-1 overflow-x-auto px-4 py-3 font-mono text-sm text-cyan-400 whitespace-nowrap">{text}</code>
+      <button onClick={copy} className="mr-2 flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-gray-500 transition-colors hover:bg-gray-800 hover:text-gray-200">
+        {copied ? (
+          <svg className="h-4 w-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        ) : (
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        )}
+      </button>
+    </div>
+  );
+}
 
 export default function ToolDetailClient({ tool }: { tool: CliTool }) {
   const router = useRouter();
@@ -54,9 +80,7 @@ export default function ToolDetailClient({ tool }: { tool: CliTool }) {
         {tool.installCommand && (
           <div className="mt-6">
             <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Install</h2>
-            <div className="rounded-lg bg-gray-950 px-4 py-3 font-mono text-sm text-cyan-400">
-              {pkgCmd ? `${pkgCmd} ${tool.installCommand}` : tool.installCommand}
-            </div>
+            <CopyButton text={pkgCmd ? `${pkgCmd} ${tool.installCommand}` : tool.installCommand} />
           </div>
         )}
 
