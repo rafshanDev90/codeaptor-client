@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ToolDetailClient from "@/components/tool-detail-client";
+import SimilarTools from "@/components/similar-tools";
 import Breadcrumb from "@/components/breadcrumb";
 
 const API_URL = process.env.API_URL || "http://localhost:3000";
@@ -19,6 +20,32 @@ async function fetchTool(slug: string) {
   }
 }
 
+async function fetchSimilarTools(currentSlug: string, categorySlug: string) {
+  if (!categorySlug) return [];
+  try {
+    const res = await fetch(`${API_URL}/api/v1/cli-tools?category=${categorySlug}&limit=6`, {
+      signal: AbortSignal.timeout(5000),
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.data?.tools || []).filter((t: any) => t.name !== currentSlug).slice(0, 5);
+  } catch {
+    return [];
+  }
+}
+
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${API_URL}/api/v1/cli-tools?limit=500`);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.data?.tools || []).map((t: any) => ({ slug: t.name }));
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -31,9 +58,12 @@ export async function generateMetadata({
     return { title: "Tool Not Found" };
   }
 
+  const cat = tool.category;
+  const catName = typeof cat === "object" ? cat.name : "";
+
   const seo = tool.seo || {};
   const title = seo.metaTitle || `${tool.displayName} — CLI Hub`;
-  const description = seo.metaDescription || tool.tagline || tool.description?.slice(0, 160) || `Learn about ${tool.displayName} CLI tool`;
+  const description = seo.metaDescription || tool.tagline || tool.description?.slice(0, 160) || `Install ${tool.displayName} — ${catName ? catName + ' ' : ''}CLI tool for developers`;
 
   const ogTitle = seo.ogTitle || title;
   const ogDesc = seo.ogDescription || description;
@@ -86,6 +116,8 @@ export default async function ToolPage({
   const cat = tool.category;
   const catName = typeof cat === "object" ? cat.name : "";
   const catSlug = typeof cat === "object" ? cat.slug : "";
+
+  const similarTools = await fetchSimilarTools(tool.name, catSlug);
 
   const softwareJsonLd = {
     "@context": "https://schema.org",
@@ -164,6 +196,9 @@ export default async function ToolPage({
         />
       </div>
       <ToolDetailClient tool={tool} />
+      {similarTools.length > 0 && (
+        <SimilarTools tools={similarTools} />
+      )}
     </>
   );
 }
